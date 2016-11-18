@@ -2,6 +2,7 @@ package com.zero.simple.view;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.graphics.Canvas;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
@@ -45,10 +46,10 @@ public class TView extends View {
         int widthMode = MeasureSpec.getMode(widthMeasureSpec);
         int heightMode = MeasureSpec.getMode(heightMeasureSpec);
         //获取宽高的实际大小  单位：PX
-        int widthSize = MeasureSpec.getSize(widthMeasureSpec);
-        int heightSize = MeasureSpec.getSize(heightMeasureSpec);
-        KLog.i("width---" + widthSize + "   height---" + heightSize);
-        KLog.i("width-----" + width + "   height-----" + height);
+//        int widthSize = MeasureSpec.getSize(widthMeasureSpec);
+//        int heightSize = MeasureSpec.getSize(heightMeasureSpec);
+//        KLog.i("width---" + widthSize + "   height---" + heightSize);
+//        KLog.i("width-----" + width + "   height-----" + height);
         //判断是否需要给宽高进行重新赋值赋值
         if (widthMode != MeasureSpec.EXACTLY && heightMode != MeasureSpec.EXACTLY) {
             setMeasuredDimension(width, height);
@@ -59,5 +60,15 @@ public class TView extends View {
         if (heightMode != MeasureSpec.EXACTLY) {
             setMeasuredDimension(widthMeasureSpec, height);
         }
+    }
+
+    @Override
+    public void draw(Canvas canvas) {
+        super.draw(canvas);
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
     }
 }
