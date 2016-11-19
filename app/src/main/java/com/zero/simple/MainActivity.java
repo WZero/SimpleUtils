@@ -3,6 +3,7 @@ package com.zero.simple;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 import com.zero.simple.base.BaseActivity;
 
@@ -14,7 +15,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        findViewById(R.id.main_tView).setOnClickListener(this);
+//        findViewById(R.id.main_tView).setOnClickListener(this);
     }
 
     @Override

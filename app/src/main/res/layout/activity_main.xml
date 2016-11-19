@@ -10,14 +10,10 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.zero.simple.MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!" />
-
     <com.zero.simple.view.TView
         android:id="@+id/main_tView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true" />
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_centerInParent="true"
+        android:background="@mipmap/ic_launcher" />
 </RelativeLayout>
