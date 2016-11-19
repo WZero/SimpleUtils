@@ -12,7 +12,6 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.zero.library.utils.DensityUtils;
 import com.zero.library.utils.KLog;
 import com.zero.simple.R;
 
@@ -27,6 +26,75 @@ public class TView extends View {
      * 设置边宽
      */
     private float strokeWidth;
+    /**
+     * 设置矩形的宽高
+     */
+    private float rectWidth;
+    private float rectHeight;
+    /**
+     * 圆的半径
+     */
+    private float circleRadius;
+    /**
+     * 文字大小
+     */
+    private float textSize;
+    /**
+     * 文本颜色
+     */
+    private int textColor;
+    /**
+     * 文本的内容
+     */
+    private String text;
+
+    public int getTextColor() {
+        return textColor;
+    }
+
+    public void setTextColor(int textColor) {
+        this.textColor = textColor;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public float getTextSize() {
+        return textSize;
+    }
+
+    public void setTextSize(float textSize) {
+        this.textSize = textSize;
+    }
+
+    public float getCircleRadius() {
+        return circleRadius;
+    }
+
+    public void setCircleRadius(float circleRadius) {
+        this.circleRadius = circleRadius;
+    }
+
+    public float getRectWidth() {
+        return rectWidth;
+    }
+
+    public void setRectWidth(float rectWidth) {
+        this.rectWidth = rectWidth;
+    }
+
+    public float getRectHeight() {
+        return rectHeight;
+    }
+
+    public void setRectHeight(float rectHeight) {
+        this.rectHeight = rectHeight;
+    }
 
     public float getStrokeWidth() {
         return strokeWidth;
@@ -49,45 +117,70 @@ public class TView extends View {
 
     public TView(Context context) {
         super(context);
-        init();
+        init(null, 0, 0);
     }
 
     public TView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
+        init(attrs, 0, 0);
     }
 
     public TView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init();
+        init(attrs, defStyleAttr, 0);
 
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public TView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-        init();
-        TypedArray typedArray = null;
-        try {
-            typedArray = getContext().getTheme().obtainStyledAttributes(attrs, R.styleable.View_TView, defStyleAttr, defStyleRes);
-            setStrokeWidth(typedArray.getDimension(typedArray.getIndex(R.styleable.View_TView_strokeWidth), 1));
-        } finally {
-            if (typedArray != null)
-                typedArray.recycle();
-        }
+        init(attrs, defStyleAttr, defStyleRes);
     }
 
-    private void init() {
+    private void init(AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         mPaint = new Paint();
         rectF = new RectF();
+        if (attrs != null) {
+            TypedArray typedArray = null;
+            try {
+                typedArray = getContext().getTheme().obtainStyledAttributes(attrs, R.styleable.View_TView, defStyleAttr, defStyleRes);
+                int indexCount = typedArray.getIndexCount();
+                for (int i = 0; i < indexCount; i++) {
+                    switch (typedArray.getIndex(i)) {
+                        case R.styleable.View_TView_strokeWidth://获取Paint的宽度
+                            setStrokeWidth(typedArray.getDimension(i, 1));
+                            break;
+                        case R.styleable.View_TView_rectWidth://获取矩形的宽
+                            setRectWidth(typedArray.getDimension(i, 1));
+                            break;
+                        case R.styleable.View_TView_rectHeight://获取矩形的高
+                            setRectHeight(typedArray.getDimension(i, 1));
+                            break;
+                        case R.styleable.View_TView_circleRadius://获取圆形的半径
+                            setCircleRadius(typedArray.getDimension(i, 1));
+                            break;
+                        case R.styleable.View_TView_textSize://获取文版字体的大小
+                            setTextSize(typedArray.getDimensionPixelSize(i, 1));
+                            break;
+                        case R.styleable.View_TView_text://获取文版内容
+                            setText(typedArray.getString(i));
+                            break;
+                        case R.styleable.View_TView_textColor://获取文版内容颜色
+                            setTextColor(typedArray.getColor(i, Color.BLACK));
+                            break;
+                    }
+                }
+            } finally {
+                if (typedArray != null)
+                    typedArray.recycle();
+            }
+        }
     }
 
     @Override//测量可用控件 修改组件大小
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         //根据实际情况设置默认宽高
-        int width = (int) DensityUtils.dp2px(getContext(), 200);
-        int height = (int) DensityUtils.dp2px(getContext(), 200);
         // 获取现在的测量模式 判断是否需要给宽高进行赋值
         int widthMode = MeasureSpec.getMode(widthMeasureSpec);
         int heightMode = MeasureSpec.getMode(heightMeasureSpec);
@@ -98,13 +191,13 @@ public class TView extends View {
 //        KLog.i("width-----" + width + "   height-----" + height);
         //判断是否需要给宽高进行重新赋值赋值
         if (widthMode != MeasureSpec.EXACTLY && heightMode != MeasureSpec.EXACTLY) {
-            setMeasuredDimension(width, height);
+            setMeasuredDimension((int) getRectWidth() + 1, (int) getRectHeight() + 1);
         }
         if (widthMode != MeasureSpec.EXACTLY) {
-            setMeasuredDimension(width, heightMeasureSpec);
+            setMeasuredDimension((int) getRectWidth() + 1, heightMeasureSpec);
         }
         if (heightMode != MeasureSpec.EXACTLY) {
-            setMeasuredDimension(widthMeasureSpec, height);
+            setMeasuredDimension(widthMeasureSpec, (int) getRectHeight() + 1);
         }
     }
 
@@ -124,10 +217,10 @@ public class TView extends View {
 //        //矩形 外
 //        mPaint.setColor(contentColor);
 
-        rectF.left = widthX - DensityUtils.dp2px(getContext(), 60) / 2;
-        rectF.top = heightY - DensityUtils.dp2px(getContext(), 50) / 2;
-        rectF.right = rectF.left + DensityUtils.dp2px(getContext(), 60);
-        rectF.bottom = rectF.top + DensityUtils.dp2px(getContext(), 50);
+        rectF.left = widthX - getRectWidth() / 2;
+        rectF.top = heightY - getRectHeight() / 2;
+        rectF.right = rectF.left + getRectWidth();
+        rectF.bottom = rectF.top + getRectHeight();
 
 //        canvas.drawRect(rectF, mPaint);
 //        mPaint.reset();
@@ -165,7 +258,7 @@ public class TView extends View {
         mPaint.setStyle(Paint.Style.STROKE);//设置为中空
         mPaint.setStrokeWidth(getStrokeWidth());
         mPaint.setAntiAlias(true);//设置抗锯齿
-        canvas.drawCircle(widthX, heightY, DensityUtils.dp2px(getContext(), 15), mPaint);
+        canvas.drawCircle(widthX, heightY, getCircleRadius(), mPaint);
         mPaint.reset();
 
         //绘画椭圆
@@ -178,10 +271,10 @@ public class TView extends View {
 
         //绘制文字
 
-        mPaint.setColor(frameColor);
-        mPaint.setTextSize(DensityUtils.sp2px(getContext(), 15));
+        mPaint.setColor(getTextColor());
+        mPaint.setTextSize(getTextSize());
         mPaint.setUnderlineText(true);//是否显示下划线
-        canvas.drawText("你好啊", widthX, rectF.bottom + mPaint.getTextSize(), mPaint);
+        canvas.drawText(getText(), widthX, rectF.bottom + mPaint.getTextSize(), mPaint);
         mPaint.reset();
     }
 

@@ -2,7 +2,12 @@
 <resources>
     <declare-styleable name="View.TView">
         <attr name="strokeWidth" format="dimension" />
-
+        <attr name="rectWidth" format="dimension" />
+        <attr name="rectHeight" format="dimension" />
+        <attr name="circleRadius" format="dimension" />
+        <attr name="textSize" format="dimension" />
+        <attr name="text" format="string" />
+        <attr name="textColor" format="color" />
     </declare-styleable>
 
 </resources>
