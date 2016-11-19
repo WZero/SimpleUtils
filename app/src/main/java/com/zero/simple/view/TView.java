@@ -2,6 +2,7 @@ package com.zero.simple.view;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -13,6 +14,7 @@ import android.view.View;
 
 import com.zero.library.utils.DensityUtils;
 import com.zero.library.utils.KLog;
+import com.zero.simple.R;
 
 
 /**
@@ -21,6 +23,19 @@ import com.zero.library.utils.KLog;
  */
 
 public class TView extends View {
+    /**
+     * 设置边宽
+     */
+    private float strokeWidth;
+
+    public float getStrokeWidth() {
+        return strokeWidth;
+    }
+
+    public void setStrokeWidth(float strokeWidth) {
+        this.strokeWidth = strokeWidth;
+    }
+
     private Paint mPaint;
     /**
      * 边框颜色
@@ -30,6 +45,7 @@ public class TView extends View {
      * 内容颜色
      */
     private int contentColor = Color.BLACK;
+    private RectF rectF;
 
     public TView(Context context) {
         super(context);
@@ -44,16 +60,26 @@ public class TView extends View {
     public TView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
+
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public TView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init();
+        TypedArray typedArray = null;
+        try {
+            typedArray = getContext().getTheme().obtainStyledAttributes(attrs, R.styleable.View_TView, defStyleAttr, defStyleRes);
+            setStrokeWidth(typedArray.getDimension(typedArray.getIndex(R.styleable.View_TView_strokeWidth), 1));
+        } finally {
+            if (typedArray != null)
+                typedArray.recycle();
+        }
     }
 
     private void init() {
         mPaint = new Paint();
+        rectF = new RectF();
     }
 
     @Override//测量可用控件 修改组件大小
@@ -94,16 +120,14 @@ public class TView extends View {
         if (heightY < 0) {
             heightY = getHeight() / 2;
         }
-//        两个矩形s实现边框
 //
 //        //矩形 外
 //        mPaint.setColor(contentColor);
-        RectF rectF = new RectF();
+
         rectF.left = widthX - DensityUtils.dp2px(getContext(), 60) / 2;
         rectF.top = heightY - DensityUtils.dp2px(getContext(), 50) / 2;
         rectF.right = rectF.left + DensityUtils.dp2px(getContext(), 60);
         rectF.bottom = rectF.top + DensityUtils.dp2px(getContext(), 50);
-        float strokeWidth = DensityUtils.dp2px(getContext(), 2);
 
 //        canvas.drawRect(rectF, mPaint);
 //        mPaint.reset();
@@ -119,18 +143,18 @@ public class TView extends View {
 
         //直线 A
         mPaint.setColor(frameColor);
-        mPaint.setStrokeWidth(strokeWidth);
+        mPaint.setStrokeWidth(getStrokeWidth());
         canvas.drawLine(rectF.left, rectF.top, rectF.right, rectF.bottom, mPaint);
         mPaint.reset();
 
         //直线 B
         mPaint.setColor(frameColor);
-        mPaint.setStrokeWidth(strokeWidth);
+        mPaint.setStrokeWidth(getStrokeWidth());
         canvas.drawLine(rectF.left, rectF.bottom, rectF.right, rectF.top, mPaint);
         mPaint.reset();
         //带边框的矩形+++++++
         mPaint.setColor(contentColor);
-        mPaint.setStrokeWidth(strokeWidth);
+        mPaint.setStrokeWidth(getStrokeWidth());
         mPaint.setStyle(Paint.Style.STROKE);//设置显示样
         // 式 设置为中空
         canvas.drawRect(rectF, mPaint);
@@ -139,14 +163,14 @@ public class TView extends View {
         //绘制圆形
         mPaint.setColor(frameColor);
         mPaint.setStyle(Paint.Style.STROKE);//设置为中空
-        mPaint.setStrokeWidth(strokeWidth);
+        mPaint.setStrokeWidth(getStrokeWidth());
         mPaint.setAntiAlias(true);//设置抗锯齿
         canvas.drawCircle(widthX, heightY, DensityUtils.dp2px(getContext(), 15), mPaint);
         mPaint.reset();
 
         //绘画椭圆
         mPaint.setColor(frameColor);
-        mPaint.setStrokeWidth(strokeWidth);
+        mPaint.setStrokeWidth(getStrokeWidth());
         mPaint.setAntiAlias(true);//设置抗锯齿
         mPaint.setStyle(Paint.Style.STROKE);//设置为中空
         canvas.drawOval(rectF, mPaint);
