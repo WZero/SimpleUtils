@@ -38,7 +38,7 @@ public class MainActivity extends BaseActivity implements SimpleRecyclerAdapter.
      */
     void addData() {
         stringList.add("自定义 View - TView");
-        stringList.add("Bitmap - 圆角图片");
+        stringList.add("Bitmap - 圆、圆弧 图片");
     }
 
     @Override

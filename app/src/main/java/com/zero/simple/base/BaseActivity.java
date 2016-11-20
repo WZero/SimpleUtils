@@ -10,10 +10,11 @@ import android.support.annotation.Nullable;
  */
 
 public class BaseActivity extends RootActivity {
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Intent intent = getIntent();
+        Intent intent =  getIntent();
         String title = intent.getStringExtra("title");
         if (title != null) {
             setTitle(title);
