@@ -268,9 +268,17 @@ public class TView extends View {
         mPaint.setStyle(Paint.Style.STROKE);//设置为中空
         canvas.drawOval(rectF, mPaint);
         mPaint.reset();
+//        canvas.translate(-50,0); 移动坐标系
 
         //绘制文字
+        canvas.rotate(15);//旋转画布
+        mPaint.setColor(getTextColor());
+        mPaint.setTextSize(getTextSize());
+        mPaint.setUnderlineText(true);//是否显示下划线
+        canvas.drawText(getText(), widthX, rectF.bottom + mPaint.getTextSize(), mPaint);
+        mPaint.reset();
 
+        canvas.rotate(-15);//旋转画布
         mPaint.setColor(getTextColor());
         mPaint.setTextSize(getTextSize());
         mPaint.setUnderlineText(true);//是否显示下划线
