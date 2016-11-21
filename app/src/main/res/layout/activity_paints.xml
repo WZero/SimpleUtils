@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:att="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_paints"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.zero.simple.PaintsActivity">
+
+    <com.zero.simple.view.PaintPolygonView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="20dp"
+        android:padding="10dp"
+        att:paintColor="@android:color/holo_orange_light"
+        att:paintShape="rectangle"
+        att:strokeWidth="2dp" />
+
+    <com.zero.simple.view.PaintPolygonView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="20dp"
+        android:padding="10dp"
+        att:paintColor="@android:color/holo_orange_light"
+        att:paintShape="round"
+        att:strokeWidth="2dp" />
+</LinearLayout>

@@ -39,6 +39,7 @@ public class MainActivity extends BaseActivity implements SimpleRecyclerAdapter.
     void addData() {
         stringList.add("自定义 View - TView");
         stringList.add("Bitmap - 圆、圆弧 图片");
+        stringList.add("Paint 多边形");
     }
 
     @Override
@@ -56,6 +57,9 @@ public class MainActivity extends BaseActivity implements SimpleRecyclerAdapter.
                 break;
             case 1:
                 intent = new Intent(getApplicationContext(), BitmapActivity.class);
+                break;
+            case 2:
+                intent = new Intent(getApplicationContext(), PaintsActivity.class);
                 break;
         }
         if (intent != null) {

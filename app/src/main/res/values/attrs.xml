@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <attr name="strokeWidth" format="dimension" />
+
     <declare-styleable name="View.TView">
-        <attr name="strokeWidth" format="dimension" />
+        <attr name="strokeWidth" />
         <attr name="rectWidth" format="dimension" />
         <attr name="rectHeight" format="dimension" />
         <attr name="circleRadius" format="dimension" />
@@ -10,4 +12,22 @@
         <attr name="textColor" format="color" />
     </declare-styleable>
 
+    <declare-styleable name="View.PaintPolygonView">
+        <attr name="paintColor" format="color" />
+        <attr name="strokeWidth" />
+        <attr name="paintShape">
+            <!--矩形-->
+            <flag name="rectangle" value="0" />
+            <!--圆形-->
+            <flag name="round" value="1" />
+            <!--三角形-->
+            <flag name="triangle" value="2" />
+            <!--六边形-->
+            <flag name="hexagon" value="3" />
+            <!--五角星-->
+            <flag name="pentagrams" value="4" />
+            <!-- 心形 -->
+            <flag name="heart" value="5" />
+        </attr>
+    </declare-styleable>
 </resources>
