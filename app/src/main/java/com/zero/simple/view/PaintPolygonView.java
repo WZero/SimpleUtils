@@ -6,11 +6,16 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Path;
+import android.graphics.Point;
+import android.graphics.PointF;
 import android.graphics.RectF;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 
+import com.zero.library.utils.KLog;
 import com.zero.simple.R;
 
 /**
@@ -33,6 +38,8 @@ public class PaintPolygonView extends View {
     private float strokeWidth = 0;
     private Paint paint;
     private RectF rectF;
+    private Path path;
+    private PointF movePoint;
 
     public float getStrokeWidth() {
         return strokeWidth;
@@ -83,6 +90,11 @@ public class PaintPolygonView extends View {
          * 心形
          */
         public static final int HEART = 5;
+
+        /**
+         * 贝塞尔
+         */
+        public static final int BESSEL = 6;
     }
 
     public PaintPolygonView(Context context) {
@@ -107,9 +119,10 @@ public class PaintPolygonView extends View {
     }
 
     private void init(AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        movePoint = new PointF();
         paint = new Paint();
-        paint.setStyle(Paint.Style.STROKE);
         rectF = new RectF();
+        path = new Path();
         if (attrs != null) {
             TypedArray typedArray = null;
             try {
@@ -133,9 +146,7 @@ public class PaintPolygonView extends View {
                     typedArray.recycle();
             }
         }
-        paint.setAntiAlias(true);
-        paint.setColor(getColor());
-        paint.setStrokeWidth(getStrokeWidth());
+
     }
 
     @Override
@@ -152,17 +163,24 @@ public class PaintPolygonView extends View {
         } else if (heightMode != MeasureSpec.EXACTLY) {
             setMeasuredDimension(widthSize, 0);
         }
-        if (widthMode == MeasureSpec.EXACTLY && heightMode == MeasureSpec.EXACTLY) {
-            rectF.left = getPaddingLeft();
-            rectF.top = getPaddingTop();
-            rectF.right = widthSize - getPaddingRight();
-            rectF.bottom = heightSize - getPaddingBottom();
-        }
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        int width = MeasureSpec.getSize(getMeasuredWidth());
+        int height = MeasureSpec.getSize(getMeasuredHeight());
+        rectF.left = getPaddingLeft();
+        rectF.top = getPaddingTop();
+        rectF.right = width - getPaddingRight();
+        rectF.bottom = height - getPaddingBottom();
+        KLog.i("RectF   left " + rectF.left + "   top " + rectF.top + "   right  " + rectF.right + "  bottom  " + rectF.bottom);
+
+
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setAntiAlias(true);
+        paint.setColor(getColor());
+        paint.setStrokeWidth(getStrokeWidth());
         switch (getPaintShape()) {
             case Shape.RECTANGLE://矩形
                 canvas.drawRect(rectF, paint);
@@ -173,6 +191,13 @@ public class PaintPolygonView extends View {
                 paint.reset();
                 break;
             case Shape.TRIANGLE://三角形
+                path.moveTo(rectF.left + (rectF.right - rectF.left) / 2, rectF.top);
+                path.lineTo(rectF.left, rectF.bottom);
+                path.lineTo(rectF.right, rectF.bottom);
+                path.close();
+                canvas.drawPath(path, paint);
+                paint.reset();
+                path.reset();
                 break;
             case Shape.PENTAGRAMS://五角星
                 break;
@@ -180,6 +205,32 @@ public class PaintPolygonView extends View {
                 break;
             case Shape.HEART://心形
                 break;
+            case Shape.BESSEL://贝塞尔
+                path.moveTo(rectF.left, rectF.bottom);
+                path.quadTo(movePoint.x, movePoint.y, rectF.right, rectF.bottom);
+                canvas.drawPath(path, paint);
+                paint.reset();
+                path.reset();
+                break;
         }
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        float widthX = event.getX();
+        float heightY = event.getY();
+        if (event.getX() < 0) {
+            widthX = 0;
+        } else if (event.getX() > getWidth()) {
+            widthX = getWidth();
+        }
+        if (event.getY() < 0) {
+            heightY = 0;
+        } else if (event.getY() > getHeight()) {
+            heightY = getHeight();
+        }
+        movePoint.set(widthX, heightY);
+        invalidate();
+        return true;
     }
 }

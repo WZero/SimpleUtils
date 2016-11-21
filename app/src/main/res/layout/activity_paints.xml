@@ -8,21 +8,101 @@
     android:orientation="vertical"
     tools:context="com.zero.simple.PaintsActivity">
 
-    <com.zero.simple.view.PaintPolygonView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="20dp"
-        android:padding="10dp"
-        att:paintColor="@android:color/holo_orange_light"
-        att:paintShape="rectangle"
-        att:strokeWidth="2dp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <com.zero.simple.view.PaintPolygonView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginLeft="20dp"
+            android:padding="1dp"
+            att:paintColor="@android:color/holo_orange_light"
+            att:paintShape="rectangle"
+            att:strokeWidth="2dp" />
+
+        <com.zero.simple.view.PaintPolygonView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginLeft="20dp"
+            android:padding="1dp"
+            att:paintColor="@android:color/holo_orange_light"
+            att:paintShape="round"
+            att:strokeWidth="2dp" />
+
+        <com.zero.simple.view.PaintPolygonView
+            android:layout_width="100dp"
+            android:layout_height="80dp"
+            android:layout_marginLeft="20dp"
+            android:padding="10dp"
+            att:paintColor="@android:color/holo_orange_light"
+            att:paintShape="round"
+            att:strokeWidth="2dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <com.zero.simple.view.PaintPolygonView
+            android:layout_width="100dp"
+            android:layout_height="80dp"
+            android:layout_marginLeft="20dp"
+            android:padding="1dp"
+            att:paintColor="@android:color/holo_orange_light"
+            att:paintShape="triangle"
+            att:strokeWidth="2dp" />
+
+        <com.zero.simple.view.PaintPolygonView
+            android:layout_width="100dp"
+            android:layout_height="80dp"
+            android:layout_marginLeft="20dp"
+            android:padding="1dp"
+            att:paintColor="@android:color/holo_orange_light"
+            att:paintShape="pentagrams"
+            att:strokeWidth="2dp" />
+
+        <com.zero.simple.view.PaintPolygonView
+            android:layout_width="100dp"
+            android:layout_height="80dp"
+            android:layout_marginLeft="20dp"
+            android:padding="1dp"
+            att:paintColor="@android:color/holo_orange_light"
+            att:paintShape="hexagon"
+            att:strokeWidth="2dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <com.zero.simple.view.PaintPolygonView
+            android:layout_width="100dp"
+            android:layout_height="80dp"
+            android:layout_marginLeft="20dp"
+            android:padding="2dp"
+            att:paintColor="@android:color/holo_orange_light"
+            att:paintShape="heart"
+            att:strokeWidth="2dp" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#999999" />
 
     <com.zero.simple.view.PaintPolygonView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="20dp"
-        android:padding="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:padding="2dp"
         att:paintColor="@android:color/holo_orange_light"
-        att:paintShape="round"
+        att:paintShape="bessel"
         att:strokeWidth="2dp" />
 </LinearLayout>

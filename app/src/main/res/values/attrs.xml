@@ -28,6 +28,8 @@
             <flag name="pentagrams" value="4" />
             <!-- 心形 -->
             <flag name="heart" value="5" />
+            <!--贝塞尔-->
+            <flag name="bessel" value="6" />
         </attr>
     </declare-styleable>
 </resources>
