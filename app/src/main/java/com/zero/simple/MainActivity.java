@@ -43,6 +43,7 @@ public class MainActivity extends BaseActivity implements SimpleRecyclerAdapter.
         stringList.add("RecyclerView Pull");
         stringList.add("Scroll 滚动");
         stringList.add("Scroll 实现回弹");
+        stringList.add("自定义 RefreshLayout");
     }
 
     @Override
@@ -72,6 +73,9 @@ public class MainActivity extends BaseActivity implements SimpleRecyclerAdapter.
                 break;
             case 5:
                 intent = new Intent(getApplicationContext(), SpringBackActivity.class);
+                break;
+            case 6:
+                intent = new Intent(getApplicationContext(), RefreshActivity.class);
                 break;
         }
         if (intent != null) {

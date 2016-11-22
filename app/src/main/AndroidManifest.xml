@@ -21,7 +21,8 @@
         <activity android:name=".PaintsActivity" />
         <activity android:name=".RecyclerActivity" />
         <activity android:name=".EasyScrollActivity" />
-        <activity android:name=".SpringBackActivity"></activity>
+        <activity android:name=".SpringBackActivity" />
+        <activity android:name=".RefreshActivity"></activity>
     </application>
 
 </manifest>

@@ -3,6 +3,8 @@ package com.zero.simple.view;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
+import android.support.v4.view.ViewCompat;
+import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -20,6 +22,15 @@ public class SpringBackLayout extends RelativeLayout {
 
     private Scroller mScroller;
     private GestureDetector mGestureDetector;
+    private RecyclerView mRecyclerView;
+
+    public RecyclerView getRecyclerView() {
+        return mRecyclerView;
+    }
+
+    public void setRecyclerView(RecyclerView recyclerView) {
+        this.mRecyclerView = recyclerView;
+    }
 
     public SpringBackLayout(Context context) {
         super(context);
@@ -59,6 +70,56 @@ public class SpringBackLayout extends RelativeLayout {
     }
 
     @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        KLog.i(canChildScrollTop() + "--canChildScrollTop---" + canChildScrollBottom());
+        requestDisallowInterceptTouchEvent(false);
+        return super.dispatchTouchEvent(ev);
+    }
+
+    float startY;
+    /**
+     * 下拉刷新
+     */
+    boolean isRefresh;
+    /**
+     * 上拉加载
+     */
+    boolean isPull;
+
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+        if (getRecyclerView() == null) {
+            return super.onInterceptTouchEvent(ev);
+        }
+        if (canChildScrollTop() && canChildScrollBottom()) {
+            return super.onInterceptTouchEvent(ev);
+        }
+        switch (ev.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                startY = ev.getY();
+                isRefresh = false;
+                isPull = false;
+                break;
+            case MotionEvent.ACTION_MOVE:
+                if (!canChildScrollTop() && startY != 0 && startY - ev.getY() < 0) {
+                    isRefresh = true;
+                    return true;
+                }
+                if (!canChildScrollBottom() && startY != 0 && startY - ev.getY() > 0) {
+                    isPull = true;
+                    return true;
+                }
+                break;
+            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_CANCEL:
+                startY = 0;
+                break;
+        }
+        return super.onInterceptTouchEvent(ev);
+    }
+
+
+    @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_UP:
@@ -89,7 +150,14 @@ public class SpringBackLayout extends RelativeLayout {
 
         @Override
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-            int disY = (int) ((distanceY - 0.5) / 4);
+            int disY = (int) ((distanceY - 0.5) / 2);
+//            KLog.i("distanceY--------- " + mScroller.getFinalY() + "   " + distanceY + "    " + disY + "   " + canChildScrollTop());
+            if (isRefresh && !canChildScrollTop() && (mScroller.getFinalY() + distanceY) > 0) {
+                disY = 0 - mScroller.getFinalY();
+            }
+            if (isPull && !canChildScrollBottom() && (mScroller.getFinalY() + distanceY) < 0) {
+                disY = 0 - mScroller.getFinalY();
+            }
             beginScroll(0, disY);
             return false;
         }
@@ -118,11 +186,24 @@ public class SpringBackLayout extends RelativeLayout {
      * @param dy int
      */
     private void beginScroll(int dx, int dy) {
-        KLog.i("-----  " + mScroller.getFinalY());
-        if (Math.abs(mScroller.getFinalY()+dy) > getHeight() / 5) {
+        if (Math.abs(mScroller.getFinalY() + dy) > getHeight() / 5) {
             dy = 0;
         }
         mScroller.startScroll(mScroller.getFinalX(), mScroller.getFinalY(), dx, dy);
         invalidate();
+    }
+
+    /**
+     * @return 是否可向上滑动
+     */
+    public boolean canChildScrollTop() {
+        return ViewCompat.canScrollVertically(getRecyclerView(), -1);
+    }
+
+    /**
+     * @return 是否可向下滑动
+     */
+    public boolean canChildScrollBottom() {
+        return ViewCompat.canScrollVertically(getRecyclerView(), 1);
     }
 }
