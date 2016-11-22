@@ -41,6 +41,8 @@ public class MainActivity extends BaseActivity implements SimpleRecyclerAdapter.
         stringList.add("Bitmap - 圆、圆弧 图片");
         stringList.add("Paint 多边形");
         stringList.add("RecyclerView Pull");
+        stringList.add("Scroll 滚动");
+        stringList.add("Scroll 实现回弹");
     }
 
     @Override
@@ -64,6 +66,12 @@ public class MainActivity extends BaseActivity implements SimpleRecyclerAdapter.
                 break;
             case 3:
                 intent = new Intent(getApplicationContext(), RecyclerActivity.class);
+                break;
+            case 4:
+                intent = new Intent(getApplicationContext(), EasyScrollActivity.class);
+                break;
+            case 5:
+                intent = new Intent(getApplicationContext(), SpringBackActivity.class);
                 break;
         }
         if (intent != null) {

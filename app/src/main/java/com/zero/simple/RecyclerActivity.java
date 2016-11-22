@@ -3,16 +3,14 @@ package com.zero.simple;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
-import android.view.LayoutInflater;
+import android.support.v7.widget.RecyclerView;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
 import com.zero.library.utils.KLog;
-import com.zero.simple.adapter.RecyclerAdapter;
 import com.zero.simple.adapter.SimpleRecyclerAdapter;
 import com.zero.simple.base.BaseActivity;
-import com.zero.simple.recyler.EasyRecyclerView;
 import com.zero.simple.recyler.EasyRefreshLayout;
 
 import java.util.ArrayList;
@@ -22,7 +20,7 @@ import java.util.List;
 public class RecyclerActivity extends BaseActivity implements SimpleRecyclerAdapter.AdapterViewHolder, SwipeRefreshLayout.OnRefreshListener, SimpleRecyclerAdapter.OnClickItemListener {
 
     private EasyRefreshLayout refreshLayout;
-    private EasyRecyclerView recyclerView;
+    private RecyclerView recyclerView;
     List<String> stringList;
     private SimpleRecyclerAdapter<String> adapter;
 //    private RecyclerAdapter adapter;
@@ -38,7 +36,7 @@ public class RecyclerActivity extends BaseActivity implements SimpleRecyclerAdap
         //设置刷新时动画的颜色，可以设置4个
         refreshLayout.setColorSchemeResources(android.R.color.holo_blue_light, android.R.color.holo_red_light, android.R.color.holo_orange_light, android.R.color.holo_green_light);
         refreshLayout.setOnRefreshListener(this);
-        recyclerView = (EasyRecyclerView) findViewById(R.id.recycler_view);
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
 //        adapter = new RecyclerAdapter(stringList);
         adapter = new SimpleRecyclerAdapter<>(getApplicationContext(), stringList, R.layout.racycler_item);

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.view.View;
 
 import com.zero.library.utils.KLog;
 
@@ -22,12 +23,6 @@ public class EasyRefreshLayout extends SwipeRefreshLayout {
     }
 
     @Override
-    public void requestDisallowInterceptTouchEvent(boolean b) {
-        KLog.i("requestDisallowInterceptTouchEvent---   "+b);
-        super.requestDisallowInterceptTouchEvent(b);
-    }
-
-    @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         boolean bool = super.onInterceptTouchEvent(ev);
         KLog.i("onInterceptTouchEvent -----" + bool);
@@ -40,4 +35,5 @@ public class EasyRefreshLayout extends SwipeRefreshLayout {
         KLog.i("-----" + bool);
         return bool;
     }
+
 }

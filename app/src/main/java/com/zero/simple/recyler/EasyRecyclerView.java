@@ -39,4 +39,18 @@ public class EasyRecyclerView extends RecyclerView {
         KLog.i("EasyRecyclerView-----" + bool);
         return bool;
     }
+
+    @Override
+    protected void onScrollChanged(int l, int t, int oldl, int oldt) {
+        super.onScrollChanged(l, t, oldl, oldt);
+        KLog.i("onScrollChanged----" + l + "  " + t + "   " + oldl + "   " + oldt);
+    }
+
+    @Override
+    public void onScrolled(int dx, int dy) {
+        super.onScrolled(dx, dy);
+        final int scrollX = getScrollX();
+        final int scrollY = getScrollY();
+        KLog.i("onScrolled---  " + dx + "   " + dy + "   " + scrollX + "   " + scrollY);
+    }
 }
