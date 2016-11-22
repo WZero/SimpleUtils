@@ -40,6 +40,7 @@ public class SimpleRecyclerAdapter<T> extends RecyclerView.Adapter<SimpleRecycle
             footLinearLayoutView = new LinearLayout(context);
             footLinearLayoutView.setOrientation(LinearLayout.VERTICAL);
             footLinearLayoutView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            footLinearLayoutView.setMinimumHeight(1);
             notifyDataSetChanged();
         }
         return footLinearLayoutView;
@@ -53,6 +54,7 @@ public class SimpleRecyclerAdapter<T> extends RecyclerView.Adapter<SimpleRecycle
             headLinearLayoutView = new LinearLayout(context);
             headLinearLayoutView.setOrientation(LinearLayout.VERTICAL);
             headLinearLayoutView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            headLinearLayoutView.setMinimumHeight(1);
             notifyDataSetChanged();
         }
         return headLinearLayoutView;
