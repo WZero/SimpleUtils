@@ -1,13 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.zero.simple.view.SpringBackLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.zero.simple.view.EasyRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:att="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_refresh"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    att:pullViewId="@+id/recycler_pull"
+    att:recyclerViewId="@+id/recycler_view"
+    att:refreshViewId="@+id/recycler_refresh"
     tools:context=".RefreshActivity">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view"
+    <TextView
+        android:id="@id/recycler_refresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-</com.zero.simple.view.SpringBackLayout>
+        android:layout_height="100dp"
+        android:background="@android:color/black"
+        android:gravity="center"
+        android:text="12456"
+        android:textColor="@android:color/white" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/recycler_refresh" />
+
+    <TextView
+        android:id="@id/recycler_pull"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/black"
+        android:gravity="center"
+        android:text="12456"
+        android:textColor="@android:color/white" />
+</com.zero.simple.view.EasyRefreshLayout>

@@ -3,14 +3,13 @@ package com.zero.simple;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
 import com.zero.library.utils.KLog;
 import com.zero.simple.adapter.SimpleRecyclerAdapter;
 import com.zero.simple.base.BaseActivity;
-import com.zero.simple.view.SpringBackLayout;
+import com.zero.simple.view.EasyRefreshLayout;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -21,7 +20,7 @@ public class RefreshActivity extends BaseActivity implements SimpleRecyclerAdapt
     private RecyclerView recyclerView;
     List<String> stringList;
     private SimpleRecyclerAdapter<String> adapter;
-    private SpringBackLayout springBackLayout;
+    private EasyRefreshLayout springBackLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +29,7 @@ public class RefreshActivity extends BaseActivity implements SimpleRecyclerAdapt
         stringList = new ArrayList<>();
         addData(stringList, 20);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        springBackLayout = (SpringBackLayout) findViewById(R.id.activity_refresh);
+        springBackLayout = (EasyRefreshLayout) findViewById(R.id.activity_refresh);
         springBackLayout.setRecyclerView(recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
         adapter = new SimpleRecyclerAdapter<>(getApplicationContext(), stringList, R.layout.racycler_item);

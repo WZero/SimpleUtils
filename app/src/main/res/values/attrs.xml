@@ -32,4 +32,9 @@
             <flag name="bessel" value="6" />
         </attr>
     </declare-styleable>
+    <declare-styleable name="View.EasyRefreshLayout">
+        <attr name="recyclerViewId" format="reference" />
+        <attr name="refreshViewId" format="reference" />
+        <attr name="pullViewId" format="reference" />
+    </declare-styleable>
 </resources>
