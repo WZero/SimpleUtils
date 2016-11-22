@@ -40,6 +40,7 @@ public class SimpleRecyclerAdapter<T> extends RecyclerView.Adapter<SimpleRecycle
             footLinearLayoutView = new LinearLayout(context);
             footLinearLayoutView.setOrientation(LinearLayout.VERTICAL);
             footLinearLayoutView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            notifyDataSetChanged();
         }
         return footLinearLayoutView;
     }
@@ -52,6 +53,7 @@ public class SimpleRecyclerAdapter<T> extends RecyclerView.Adapter<SimpleRecycle
             headLinearLayoutView = new LinearLayout(context);
             headLinearLayoutView.setOrientation(LinearLayout.VERTICAL);
             headLinearLayoutView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            notifyDataSetChanged();
         }
         return headLinearLayoutView;
     }
@@ -93,9 +95,9 @@ public class SimpleRecyclerAdapter<T> extends RecyclerView.Adapter<SimpleRecycle
 
     @Override
     public int getItemViewType(int position) {
-        if (position == 0) {
+        if (headLinearLayoutView != null && position == 0) {
             return HEAD_ITEM;
-        } else if (position == getItemCount() - 1) {
+        } else if (footLinearLayoutView != null && position == getItemCount() - (headLinearLayoutView == null ? 0 : 1)) {
             return FOOT_ITEM;
         } else {
             return CONTENT_ITEM;
@@ -104,7 +106,14 @@ public class SimpleRecyclerAdapter<T> extends RecyclerView.Adapter<SimpleRecycle
 
     @Override
     public int getItemCount() {
-        return stringList == null ? 2 : stringList.size() + 2;
+        int count = 0;
+        if (headLinearLayoutView != null) {
+            count++;
+        }
+        if (footLinearLayoutView != null) {
+            count++;
+        }
+        return stringList == null ? count : stringList.size() + count;
     }
 
 
@@ -130,19 +139,19 @@ public class SimpleRecyclerAdapter<T> extends RecyclerView.Adapter<SimpleRecycle
 
         private ContentViewHolder(View itemView) {
             super(itemView);
-            itemView.setOnClickListener(this);
+            if (onClickItemListener != null)
+                itemView.setOnClickListener(this);
         }
 
         @Override
         public void showItem() {
             if (adapterViewHolder != null)
-                adapterViewHolder.onViewHolder(itemView, getAdapterPosition() - 1);
+                adapterViewHolder.onViewHolder(itemView, getAdapterPosition() - (headLinearLayoutView == null ? 0 : 1));
         }
 
         @Override
         public void onClick(View view) {
-            if (onClickItemListener != null)
-                onClickItemListener.onItemClick(view, getAdapterPosition() - 1);
+            onClickItemListener.onItemClick(view, getAdapterPosition() - (headLinearLayoutView == null ? 0 : 1));
         }
     }
 

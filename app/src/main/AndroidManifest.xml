@@ -18,7 +18,8 @@
         <activity android:name=".TwoActivity" />
         <activity android:name=".TViewActivity" />
         <activity android:name=".BitmapActivity" />
-        <activity android:name=".PaintsActivity"></activity>
+        <activity android:name=".PaintsActivity" />
+        <activity android:name=".RecyclerActivity"></activity>
     </application>
 
 </manifest>
