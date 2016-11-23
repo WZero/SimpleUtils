@@ -10,28 +10,65 @@
     att:refreshViewId="@+id/recycler_refresh"
     tools:context=".RefreshActivity">
 
-    <TextView
+    <LinearLayout
         android:id="@id/recycler_refresh"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:background="@android:color/black"
-        android:gravity="center"
-        android:text="12456"
-        android:textColor="@android:color/white" />
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:paddingBottom="20dp"
+        android:paddingTop="20dp">
+
+        <ProgressBar
+            android:id="@+id/progressBar_top"
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:gravity="center"
+            android:text="刷新中..."
+            android:textColor="@android:color/black" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@id/recycler_pull"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:paddingBottom="20dp"
+        android:paddingTop="20dp">
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:gravity="center"
+            android:text="加载中..."
+            android:textColor="@android:color/black" />
+
+    </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:layout_below="@id/recycler_refresh" />
 
-    <TextView
-        android:id="@id/recycler_pull"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_alignParentBottom="true"
-        android:background="@android:color/black"
-        android:gravity="center"
-        android:text="12456"
-        android:textColor="@android:color/white" />
 </com.zero.simple.view.EasyRefreshLayout>

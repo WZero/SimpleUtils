@@ -31,6 +31,11 @@ public class EasyRefreshLayout extends RelativeLayout {
     private int recyclerViewId = -1;
     private int refreshViewId = -1;
     private int pullViewId = -1;
+    OnEasyRefresh onEasyRefresh;
+
+    public void setOnEasyRefresh(OnEasyRefresh onEasyRefresh) {
+        this.onEasyRefresh = onEasyRefresh;
+    }
 
     public int getPullViewId() {
         return pullViewId;
@@ -67,9 +72,10 @@ public class EasyRefreshLayout extends RelativeLayout {
                 p.setMargins(0, 0, 0, -pullView.getHeight());
                 pullView.requestLayout();
             }
+            pullView.layout(0, getHeight(), pullView.getWidth(), getHeight() + pullView.getHeight());
+            this.pullView = pullView;
+            setPullViewId(-1);
         }
-        this.pullView = pullView;
-        setPullViewId(-1);
     }
 
     public View getRefreshView() {
@@ -84,9 +90,9 @@ public class EasyRefreshLayout extends RelativeLayout {
                 p.setMargins(0, -refreshView.getHeight(), 0, 0);
                 refreshView.requestLayout();
             }
+            this.refreshView = refreshView;
+            setRefreshViewId(-1);
         }
-        this.refreshView = refreshView;
-        setRefreshViewId(-1);
     }
 
     public View getRecyclerView() {
@@ -130,7 +136,6 @@ public class EasyRefreshLayout extends RelativeLayout {
                 for (int i = 0; i < indexCount; i++) {
                     switch (typedArray.getIndex(i)) {
                         case R.styleable.View_EasyRefreshLayout_recyclerViewId:
-                            KLog.i("-----" + findViewById(R.id.recycler_refresh));
                             setRecyclerViewId(typedArray.getResourceId(i, 0));
                             break;
                         case R.styleable.View_EasyRefreshLayout_refreshViewId:
@@ -180,7 +185,6 @@ public class EasyRefreshLayout extends RelativeLayout {
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        KLog.i(canChildScrollTop() + "--canChildScrollTop---" + canChildScrollBottom());
         requestDisallowInterceptTouchEvent(false);
         return super.dispatchTouchEvent(ev);
     }
@@ -194,6 +198,14 @@ public class EasyRefreshLayout extends RelativeLayout {
      * 上拉加载
      */
     boolean isPull;
+    /**
+     * 下拉刷新 中（正在执行回调）
+     */
+    boolean isRefreshing;
+    /**
+     * 上拉加载 中（正在执行回调）
+     */
+    boolean isPulling;
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
@@ -232,6 +244,8 @@ public class EasyRefreshLayout extends RelativeLayout {
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_UP:
+                isRefresh = true;
+                isPull = true;
                 reset(0, 0);
                 break;
             default:
@@ -260,13 +274,26 @@ public class EasyRefreshLayout extends RelativeLayout {
         @Override
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
             int disY = (int) ((distanceY - 0.5) / 3);
-            if (isRefresh && !canChildScrollTop() && (mScroller.getFinalY() + distanceY) > 0) {
-                disY = 0 - mScroller.getFinalY();
+            KLog.i("isRefresh  " + isRefresh + "   isPull  " + isPull);
+            if (isRefresh && !canChildScrollTop()) {//下拉进入
+                if (mScroller.getFinalY() + disY > 0) {
+                    return false;
+                }
+                if (Math.abs(mScroller.getFinalY() + disY) > getRefreshView().getHeight()) {
+                    disY = Math.abs(mScroller.getFinalY()) - getRefreshView().getHeight();
+                }
+                beginScroll(0, disY);
+            } else if (isPull && !canChildScrollBottom()) {//上拉进入
+                KLog.i(Math.abs(mScroller.getFinalY() + disY) + "-------------" + getPullView().getHeight());
+
+                if (mScroller.getFinalY() + disY < 0) {
+                    return false;
+                }
+                if (mScroller.getFinalY() + disY > getPullView().getHeight()) {
+                    disY = getPullView().getHeight() - mScroller.getFinalY();
+                }
+                beginScroll(0, disY);
             }
-            if (isPull && !canChildScrollBottom() && (mScroller.getFinalY() + distanceY) < 0) {
-                disY = 0 - mScroller.getFinalY();
-            }
-            beginScroll(0, disY);
             return false;
         }
 
@@ -299,11 +326,20 @@ public class EasyRefreshLayout extends RelativeLayout {
         } else if (isRefresh && getRefreshView() == null) {
             dy = 0;
         }
-
+        if (isRefresh && !isRefreshing && !isPulling && Math.abs(mScroller.getFinalY() + dy) > (getRefreshView().getHeight() * 0.75f)) {
+            isRefreshing = true;
+            if (onEasyRefresh != null)
+                onEasyRefresh.onRefresh();
+        }
         if (isPull && getPullView() != null && Math.abs(mScroller.getFinalY() + dy) > getPullView().getHeight()) {
-            dy = mScroller.getFinalY() - getPullView().getHeight();
+            dy = getPullView().getHeight() - mScroller.getFinalY();
         } else if (isRefresh && getPullView() == null) {
             dy = 0;
+        }
+        if (isPull && !isPulling && !isRefreshing && Math.abs(mScroller.getFinalY() + dy) > (getPullView().getHeight() * 0.75f)) {
+            isPulling = true;
+            if (onEasyRefresh != null)
+                onEasyRefresh.onPull();
         }
         mScroller.startScroll(mScroller.getFinalX(), mScroller.getFinalY(), dx, dy);
         invalidate();
@@ -321,5 +357,29 @@ public class EasyRefreshLayout extends RelativeLayout {
      */
     public boolean canChildScrollBottom() {
         return ViewCompat.canScrollVertically(getRecyclerView(), 1);
+    }
+
+    /**
+     * 刷新结束
+     */
+    public void refreshOver() {
+        isRefreshing = false;
+        isPulling = false;
+    }
+
+    /**
+     * 刷新回调
+     */
+    public interface OnEasyRefresh {
+
+        /**
+         * 下拉刷新
+         */
+        void onRefresh();
+
+        /**
+         * 上拉加载
+         */
+        void onPull();
     }
 }

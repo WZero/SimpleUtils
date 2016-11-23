@@ -15,12 +15,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class RefreshActivity extends BaseActivity implements SimpleRecyclerAdapter.AdapterViewHolder, SimpleRecyclerAdapter.OnClickItemListener {
+public class RefreshActivity extends BaseActivity implements SimpleRecyclerAdapter.AdapterViewHolder, SimpleRecyclerAdapter.OnClickItemListener, EasyRefreshLayout.OnEasyRefresh {
 
     private RecyclerView recyclerView;
     List<String> stringList;
     private SimpleRecyclerAdapter<String> adapter;
-    private EasyRefreshLayout springBackLayout;
+    private EasyRefreshLayout refreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,13 +29,14 @@ public class RefreshActivity extends BaseActivity implements SimpleRecyclerAdapt
         stringList = new ArrayList<>();
         addData(stringList, 20);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-        springBackLayout = (EasyRefreshLayout) findViewById(R.id.activity_refresh);
-        springBackLayout.setRecyclerView(recyclerView);
+        refreshLayout = (EasyRefreshLayout) findViewById(R.id.activity_refresh);
+        refreshLayout.setRecyclerView(recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
         adapter = new SimpleRecyclerAdapter<>(getApplicationContext(), stringList, R.layout.racycler_item);
         recyclerView.setAdapter(adapter);
         adapter.setAdapterViewHolder(this);
         adapter.setOnClickItemListener(this);
+        refreshLayout.setOnEasyRefresh(this);
     }
 
     private void addData(List<String> list, int count) {
@@ -54,5 +55,52 @@ public class RefreshActivity extends BaseActivity implements SimpleRecyclerAdapt
     @Override
     public void onItemClick(View view, int position) {
         KLog.i("--------" + position);
+    }
+
+    @Override
+    public void onRefresh() {
+        KLog.i("下拉刷新......");
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                stringList.clear();
+                addData(stringList, 20);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        refreshLayout.refreshOver();
+                        adapter.notifyDataSetChanged();
+                    }
+                });
+            }
+        }).start();
+    }
+
+    @Override
+    public void onPull() {
+        KLog.i("上拉加载......");
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                addData(stringList, 20);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        refreshLayout.refreshOver();
+                        adapter.notifyDataSetChanged();
+                    }
+                });
+            }
+        }).start();
     }
 }
