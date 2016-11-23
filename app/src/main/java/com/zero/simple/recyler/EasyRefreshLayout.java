@@ -1,4 +1,4 @@
-package com.zero.simple.view;
+package com.zero.simple.recyler;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -42,6 +42,7 @@ public class EasyRefreshLayout extends RelativeLayout {
     }
 
     public void setPullViewId(int pullViewId) {
+        KLog.i("--------" + pullViewId);
         this.pullViewId = pullViewId;
     }
 
@@ -50,6 +51,7 @@ public class EasyRefreshLayout extends RelativeLayout {
     }
 
     public void setRefreshViewId(int refreshViewId) {
+        KLog.i("--------" + refreshViewId);
         this.refreshViewId = refreshViewId;
     }
 
@@ -58,6 +60,7 @@ public class EasyRefreshLayout extends RelativeLayout {
     }
 
     public void setRecyclerViewId(int recyclerViewId) {
+        KLog.i("--------" + recyclerViewId);
         this.recyclerViewId = recyclerViewId;
     }
 
@@ -83,7 +86,6 @@ public class EasyRefreshLayout extends RelativeLayout {
     }
 
     public void setRefreshView(View refreshView) {
-        KLog.i("-----" + refreshView);
         if (refreshView != null) {
             if (refreshView.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
                 ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) refreshView.getLayoutParams();
@@ -157,6 +159,7 @@ public class EasyRefreshLayout extends RelativeLayout {
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         super.onLayout(changed, l, t, r, b);
+        KLog.i("------" + getPullViewId());
         if (getRecyclerViewId() != -1 || getRefreshViewId() != -1 || getPullViewId() != -1) {
             final int count = getChildCount();
             for (int i = 0; i < count; i++) {

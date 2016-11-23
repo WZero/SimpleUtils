@@ -9,7 +9,7 @@ import android.widget.TextView;
 import com.zero.library.utils.KLog;
 import com.zero.simple.adapter.SimpleRecyclerAdapter;
 import com.zero.simple.base.BaseActivity;
-import com.zero.simple.view.EasyRefreshLayout;
+import com.zero.simple.recyler.EasyRefreshLayout;
 
 import java.util.ArrayList;
 import java.util.Date;
