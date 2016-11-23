@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
-import android.widget.ScrollView;
 
 import com.zero.library.utils.KLog;
 import com.zero.simple.base.BaseActivity;

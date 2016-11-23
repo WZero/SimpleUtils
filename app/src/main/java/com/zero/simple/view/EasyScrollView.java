@@ -10,8 +10,6 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Scroller;
 
-import com.zero.library.utils.KLog;
-
 /**
  * 作者： Wang
  * 时间： 2016/11/22

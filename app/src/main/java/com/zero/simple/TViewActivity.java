@@ -1,6 +1,5 @@
 package com.zero.simple;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -21,9 +20,6 @@ public class TViewActivity extends BaseActivity implements View.OnClickListener 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.view_tView:
-//                showToast(new Date().getTime() + "");
-                Intent intent = new Intent(getApplicationContext(), TwoActivity.class);
-                startActivity(intent);
                 break;
         }
     }

@@ -222,11 +222,11 @@ public class EasyRefreshLayout extends RelativeLayout {
                 isPull = false;
                 break;
             case MotionEvent.ACTION_MOVE:
-                if (!canChildScrollTop() && startY != 0 && startY - ev.getY() < 0) {
+                if (!canChildScrollTop() && startY != 0 && startY - ev.getY() < 0 && getRefreshView() != null) {
                     isRefresh = true;
                     return true;
                 }
-                if (!canChildScrollBottom() && startY != 0 && startY - ev.getY() > 0) {
+                if (!canChildScrollBottom() && startY != 0 && startY - ev.getY() > 0 && getPullView() != null) {
                     isPull = true;
                     return true;
                 }
@@ -275,7 +275,7 @@ public class EasyRefreshLayout extends RelativeLayout {
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
             int disY = (int) ((distanceY - 0.5) / 3);
             KLog.i("isRefresh  " + isRefresh + "   isPull  " + isPull);
-            if (isRefresh && !canChildScrollTop()) {//下拉进入
+            if (isRefresh) {//下拉进入
                 if (mScroller.getFinalY() + disY > 0) {
                     return false;
                 }
@@ -283,9 +283,7 @@ public class EasyRefreshLayout extends RelativeLayout {
                     disY = Math.abs(mScroller.getFinalY()) - getRefreshView().getHeight();
                 }
                 beginScroll(0, disY);
-            } else if (isPull && !canChildScrollBottom()) {//上拉进入
-                KLog.i(Math.abs(mScroller.getFinalY() + disY) + "-------------" + getPullView().getHeight());
-
+            } else if (isPull) {//上拉进入
                 if (mScroller.getFinalY() + disY < 0) {
                     return false;
                 }
@@ -328,8 +326,8 @@ public class EasyRefreshLayout extends RelativeLayout {
         }
         if (isRefresh && !isRefreshing && !isPulling && Math.abs(mScroller.getFinalY() + dy) > (getRefreshView().getHeight() * 0.75f)) {
             isRefreshing = true;
-            if (onEasyRefresh != null)
-                onEasyRefresh.onRefresh();
+            onEasyRefresh();
+
         }
         if (isPull && getPullView() != null && Math.abs(mScroller.getFinalY() + dy) > getPullView().getHeight()) {
             dy = getPullView().getHeight() - mScroller.getFinalY();
@@ -338,8 +336,8 @@ public class EasyRefreshLayout extends RelativeLayout {
         }
         if (isPull && !isPulling && !isRefreshing && Math.abs(mScroller.getFinalY() + dy) > (getPullView().getHeight() * 0.75f)) {
             isPulling = true;
-            if (onEasyRefresh != null)
-                onEasyRefresh.onPull();
+            onEasyRefresh();
+
         }
         mScroller.startScroll(mScroller.getFinalX(), mScroller.getFinalY(), dx, dy);
         invalidate();
@@ -367,11 +365,19 @@ public class EasyRefreshLayout extends RelativeLayout {
         isPulling = false;
     }
 
+    private void onEasyRefresh() {
+        if (onEasyRefresh != null)
+            if (isRefreshing) {
+                onEasyRefresh.onRefresh();
+            } else {
+                onEasyRefresh.onPull();
+            }
+    }
+
     /**
      * 刷新回调
      */
     public interface OnEasyRefresh {
-
         /**
          * 下拉刷新
          */

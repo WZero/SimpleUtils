@@ -15,14 +15,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".TwoActivity" />
         <activity android:name=".TViewActivity" />
         <activity android:name=".BitmapActivity" />
         <activity android:name=".PaintsActivity" />
         <activity android:name=".RecyclerActivity" />
         <activity android:name=".EasyScrollActivity" />
         <activity android:name=".SpringBackActivity" />
-        <activity android:name=".RefreshActivity"></activity>
+        <activity android:name=".RefreshActivity" />
     </application>
 
 </manifest>
