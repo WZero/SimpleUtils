@@ -11,6 +11,7 @@ import com.zero.simple.adapter.SimpleRecyclerAdapter;
 import com.zero.simple.base.BaseActivity;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends BaseActivity implements SimpleRecyclerAdapter.AdapterViewHolder, SimpleRecyclerAdapter.OnClickItemListener {
@@ -44,6 +45,7 @@ public class MainActivity extends BaseActivity implements SimpleRecyclerAdapter.
         stringList.add("Scroll 滚动");
         stringList.add("Scroll 实现回弹");
         stringList.add("自定义 RefreshLayout");
+        stringList.add("测试子线程 Toast ");
     }
 
     @Override
@@ -76,6 +78,14 @@ public class MainActivity extends BaseActivity implements SimpleRecyclerAdapter.
                 break;
             case 6:
                 intent = new Intent(getApplicationContext(), RefreshActivity.class);
+                break;
+            case 7:
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showToast(new Date().getTime()+"");
+                    }
+                }).start();
                 break;
         }
         if (intent != null) {

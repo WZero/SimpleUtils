@@ -7,8 +7,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 /**
- * 作者： Wang
- * 时间： 2016/11/18
+ * <h1>作者： Wang</h1>
+ * <h1>时间： 2016/11/18</h1>
+ * <p>1、处理 startActivity 重复多次跳转</p>
+ * <p>2、优化 Toast 支持子线程弹出</p>
  */
 
 public class RootActivity extends AppCompatActivity {
@@ -47,15 +49,47 @@ public class RootActivity extends AppCompatActivity {
         showToast(getResources().getText(resId), Toast.LENGTH_SHORT);
     }
 
-    protected void showToast(CharSequence charSequence, int duration) {
-        if (cToast == null) {
-            cToast = Toast.makeText(getApplicationContext(), charSequence, duration);
-            cToast.show();
-        } else {
-            cToast.setText(charSequence);
-            cToast.setDuration(duration);
-            cToast.show();
-        }
+    /**
+     * 支持子线程 Show
+     *
+     * @param charSequence CharSequence
+     * @param duration     duration
+     */
+    protected void showToast(final CharSequence charSequence, final int duration) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (cToast == null) {
+                    cToast = Toast.makeText(getApplicationContext(), charSequence, duration);
+                    cToast.show();
+                } else {
+                    cToast.setText(charSequence);
+                    cToast.setDuration(duration);
+                    cToast.show();
+                }
+            }
+        });
+    }
+
+    /**
+     * Activity 跳转
+     *
+     * @param cls Class<?>
+     */
+    public void startActivity(Class<?> cls) {
+        super.startActivity(new Intent(getApplicationContext(), cls));
+    }
+
+    /**
+     * Activity 跳转
+     *
+     * @param cls     Class<?>
+     * @param options Bundle
+     */
+    public void startActivity(Class<?> cls, @Nullable Bundle options) {
+        Intent intent = new Intent(getApplicationContext(), cls);
+        intent.putExtras(options);
+        super.startActivity(intent);
     }
 
     @Override
