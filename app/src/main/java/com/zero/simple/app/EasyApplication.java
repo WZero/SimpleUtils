@@ -1,6 +1,6 @@
 package com.zero.simple.app;
 
-import com.zero.library.app.RootApplication;
+import com.easy.app.RootApplication;
 
 /**
  * 作者： Wang

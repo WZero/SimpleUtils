@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.Scroller;
 
-import com.zero.library.utils.KLog;
+import com.easy.utils.KLog;
 import com.zero.simple.R;
 
 /**

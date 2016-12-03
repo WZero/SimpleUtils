@@ -13,8 +13,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.widget.ImageView;
 
-import com.zero.library.utils.DensityUtils;
-import com.zero.library.utils.KLog;
+import com.easy.utils.DensityUtils;
+import com.easy.utils.KLog;
 import com.zero.simple.base.BaseActivity;
 
 /**

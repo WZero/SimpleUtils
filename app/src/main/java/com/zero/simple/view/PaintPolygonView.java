@@ -14,7 +14,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.zero.library.utils.KLog;
+import com.easy.utils.KLog;
 import com.zero.simple.R;
 
 /**

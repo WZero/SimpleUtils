@@ -5,7 +5,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 
-import com.zero.library.utils.KLog;
+import com.easy.utils.KLog;
 import com.zero.simple.base.BaseActivity;
 import com.zero.simple.view.EasyScrollView;
 

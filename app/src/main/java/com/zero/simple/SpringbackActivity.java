@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.RelativeLayout;
 
-import com.zero.library.utils.KLog;
+import com.easy.utils.KLog;
 import com.zero.simple.base.BaseActivity;
 
 /**

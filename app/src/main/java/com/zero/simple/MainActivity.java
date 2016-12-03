@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.zero.library.utils.ApplicationUtils;
 import com.zero.simple.adapter.SimpleRecyclerAdapter;
 import com.zero.simple.base.BaseActivity;
 
@@ -82,13 +81,12 @@ public class MainActivity extends BaseActivity implements SimpleRecyclerAdapter.
                 intent = new Intent(getApplicationContext(), RefreshActivity.class);
                 break;
             case 7:
-//                new Thread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        showToast(new Date().getTime()+"");
-//                    }
-//                }).start();
-                Toast.makeText(ApplicationUtils.getApplicationContext(), "dadad", Toast.LENGTH_SHORT).show();
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showToast(new Date().getTime()+"");
+                    }
+                }).start();
                 break;
         }
         if (intent != null) {
