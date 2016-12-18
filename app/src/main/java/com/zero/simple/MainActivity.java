@@ -5,11 +5,13 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.zero.simple.adapter.SimpleRecyclerAdapter;
 import com.zero.simple.base.BaseActivity;
+import com.zero.simple.recyler.DividerItemDecoration;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -29,10 +31,16 @@ public class MainActivity extends BaseActivity implements SimpleRecyclerAdapter.
         addData();
         recyclerView = (RecyclerView) findViewById(R.id.main_recycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
+        DividerItemDecoration itemDecoration = new DividerItemDecoration(getApplicationContext());
+        itemDecoration.setDivider(R.color.colorAccent);
+        itemDecoration.setDividerHeight(R.dimen.activity_horizontal_margin);
+        recyclerView.addItemDecoration(itemDecoration);
         adapter = new SimpleRecyclerAdapter<>(getApplicationContext(), stringList, R.layout.main_item);
         adapter.setAdapterViewHolder(this);
         adapter.setOnClickItemListener(this);
         recyclerView.setAdapter(adapter);
+        ImageView imageView = new ImageView(getApplicationContext());
+        imageView.setImageResource(R.mipmap.ic_launcher);
     }
 
     /**
@@ -84,7 +92,7 @@ public class MainActivity extends BaseActivity implements SimpleRecyclerAdapter.
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        showToast(new Date().getTime()+"");
+                        showToast(new Date().getTime() + "");
                     }
                 }).start();
                 break;
